@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="card p-4">
+        <h4 class="mb-3"><i class="fa-solid fa-user-plus"></i> Add New Lead</h4>
+        <form method="POST">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Status</label>
+                    <select name="status" class="form-select">
+                        <option>new</option>
+                        <option>contacted</option>
+                        <option>qualified</option>
+                        <option>converted</option>
+                        <option>lost</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Score</label>
+                    <input type="number" name="score" class="form-control" value="0">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success mt-2"><i class="fa-solid fa-check"></i> Add Lead</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

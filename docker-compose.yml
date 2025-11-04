@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  crm:
+    build: .
+    container_name: mini_crm
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+      - ./mini_crm.db:/app/mini_crm.db   # optional persistent sqlite on host
+    environment:
+      - DATABASE_URL=sqlite:///mini_crm.db

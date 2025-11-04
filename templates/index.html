@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4"><i class="fa-solid fa-gauge"></i> CRM Dashboard</h2>
+
+<div class="row mb-4">
+    {% for label, color, count in [
+        ('Total Leads', 'primary', total_leads),
+        ('Contacted', 'info', status_counts['contacted']),
+        ('Qualified', 'warning', status_counts['qualified']),
+        ('Converted', 'success', status_counts['converted']),
+        ('Lost', 'danger', status_counts['lost'])
+    ] %}
+    <div class="col-md-2">
+        <div class="card text-center border-{{ color }}">
+            <div class="card-body">
+                <h6 class="card-title text-{{ color }}">{{ label }}</h6>
+                <h3>{{ count }}</h3>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<h4 class="mt-5 mb-3"><i class="fa-solid fa-star"></i> Top Leads</h4>
+<table class="table table-striped table-hover align-middle">
+    <thead class="table-light">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for lead in top_leads %}
+        <tr>
+            <td>{{ lead.name }}</td>
+            <td>{{ lead.email }}</td>
+            <td><span class="badge bg-{{ 'success' if lead.status == 'converted' else 'secondary' }}">{{ lead.status }}</span></td>
+            <td>{{ lead.score }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
