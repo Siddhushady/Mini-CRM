@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Siddhushady/Mini-CRM.git'
+                git branch: 'main', url: 'https://github.com/Siddhushady/Mini-CRM.git'
             }
         }
 
