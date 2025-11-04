@@ -1,13 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="card p-4">
-    <h4><i class="fa-solid fa-robot"></i> Lead Automation Simulation</h4>
-    <p class="text-muted">Click below to run automated lead scoring and qualification.</p>
-    <form method="POST">
-        <button class="btn btn-warning"><i class="fa-solid fa-play"></i> Run Automation</button>
+<div class="container mt-4">
+    <h3 class="mb-3"><i class="fa-solid fa-robot"></i> Run Lead Automation</h3>
+    <p>This process automatically updates leads based on their score and contact status.</p>
+
+    <form method="post" class="mb-4">
+        <button type="submit" class="btn btn-success px-4">
+            <i class="fa-solid fa-play"></i> Run Automation
+        </button>
     </form>
-    {% if message %}
-    <div class="alert alert-success mt-3">{{ message }}</div>
+
+    {% if processed %}
+    <div class="alert alert-info">
+        <strong>Automation Results:</strong>
+        <ul class="mb-0">
+            <li>Converted: {{ processed.converted }}</li>
+            <li>Qualified: {{ processed.qualified }}</li>
+            <li>Contacted: {{ processed.contacted }}</li>
+        </ul>
+    </div>
+
+    {% if updated_leads %}
+    <h5 class="mt-4">Updated Leads</h5>
+    <table class="table table-striped">
+        <thead class="table-light">
+            <tr>
+                <th>Name</th>
+                <th>Old Status</th>
+                <th>New Status</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lead in updated_leads %}
+            <tr>
+                <td>{{ lead.name }}</td>
+                <td>{{ lead.old }}</td>
+                <td><span class="badge bg-success">{{ lead.new }}</span></td>
+                <td>{{ lead.score }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
     {% endif %}
 </div>
 {% endblock %}

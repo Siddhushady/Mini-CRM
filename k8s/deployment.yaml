@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mini-crm-deployment
+  labels:
+    app: mini-crm
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mini-crm
+  template:
+    metadata:
+      labels:
+        app: mini-crm
+    spec:
+      containers:
+        - name: mini-crm
+          image: mini-crm:latest      # will change later to your Docker Hub image
+          imagePullPolicy: Never      # set to IfNotPresent after pushing to Docker Hub
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DATABASE_URL
+              value: sqlite:///data/mini_crm.db
+          volumeMounts:
+            - name: crm-storage
+              mountPath: /app/data
+      volumes:
+        - name: crm-storage
+          persistentVolumeClaim:
+            claimName: crm-pvc

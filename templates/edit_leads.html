@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h3 class="mb-4"><i class="fa-solid fa-pen"></i> Edit Lead</h3>
+
+    <form action="{{ url_for('update_lead', lead_id=lead.id) }}" method="post" class="card p-4 shadow-sm">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Name</label>
+                <input type="text" name="name" class="form-control" value="{{ lead.name }}">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Email</label>
+                <input type="email" name="email" class="form-control" value="{{ lead.email }}">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Phone</label>
+                <input type="text" name="phone" class="form-control" value="{{ lead.phone }}">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Source</label>
+                <input type="text" name="source" class="form-control" value="{{ lead.source }}">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Status</label>
+                <select name="status" class="form-select">
+                    {% for s in ['new', 'contacted', 'qualified', 'converted', 'lost'] %}
+                    <option value="{{ s }}" {% if s == lead.status %}selected{% endif %}>{{ s|capitalize }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Score</label>
+                <input type="number" name="score" class="form-control" value="{{ lead.score }}">
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Notes</label>
+            <textarea name="notes" class="form-control" rows="3">{{ lead.notes }}</textarea>
+        </div>
+
+        <div class="text-end mt-4">
+            <button type="submit" class="btn btn-success px-4">
+                <i class="fa-solid fa-check"></i> Update Lead
+            </button>
+            <a href="{{ url_for('view_leads') }}" class="btn btn-secondary ms-2">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

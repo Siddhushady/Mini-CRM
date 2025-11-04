@@ -1,4 +1,3 @@
-# Dockerfile - simple single-stage
 FROM python:3.11-slim
 
 WORKDIR /app
@@ -14,5 +13,5 @@ ENV DATABASE_URL=sqlite:///mini_crm.db
 
 EXPOSE 5000
 
-# Use gunicorn for production-like server (single worker for demo)
-CMD ["gunicorn", "-w", "1", "-b", "0.0.0.0:5000", "app:create_app()"]
+# Run Flask directly (since we’re in early stage)
+CMD ["python", "app.py"]
