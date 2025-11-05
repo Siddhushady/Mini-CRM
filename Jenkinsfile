@@ -4,7 +4,6 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
         IMAGE_NAME = "rsiddharth2264/mini-crm"
-        KUBECONFIG_CREDENTIALS = credentials('kubeconfig')
     }
 
     stages {
@@ -25,10 +24,10 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    sh """
+                    sh '''
                     echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
                     docker push $IMAGE_NAME:latest
-                    """
+                    '''
                 }
             }
         }
@@ -36,12 +35,14 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    writeFile file: 'kubeconfig', text: "${KUBECONFIG_CREDENTIALS}"
-                    sh """
-                    export KUBECONFIG=kubeconfig
-                    kubectl set image deployment/mini-crm-deployment mini-crm=$IMAGE_NAME:latest --record
-                    kubectl rollout status deployment/mini-crm-deployment
-                    """
+                    // Use kubeconfig file securely
+                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
+                        sh '''
+                        export KUBECONFIG=$KUBECONFIG_FILE
+                        kubectl set image deployment/mini-crm-deployment mini-crm=$IMAGE_NAME:latest --record
+                        kubectl rollout status deployment/mini-crm-deployment
+                        '''
+                    }
                 }
             }
         }
