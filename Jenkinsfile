@@ -25,8 +25,8 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-                    docker push $IMAGE_NAME:latest
+                        echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+                        docker push $IMAGE_NAME:latest
                     '''
                 }
             }
@@ -35,12 +35,11 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    // Use kubeconfig file securely
                     withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
                         sh '''
-                        export KUBECONFIG=$KUBECONFIG_FILE
-                        kubectl set image deployment/mini-crm-deployment mini-crm=$IMAGE_NAME:latest --record
-                        kubectl rollout status deployment/mini-crm-deployment
+                            export KUBECONFIG=$KUBECONFIG_FILE
+                            kubectl set image deployment/mini-crm-deployment mini-crm=$IMAGE_NAME:latest --record
+                            kubectl rollout status deployment/mini-crm-deployment
                         '''
                     }
                 }
